@@ -9,25 +9,54 @@ class Form extends React.Component{
             age: 0,
             name: '',
             number: 0,
-            email: ''
+            email: '',
+            isValidNumber: true,
+            isValidEmail: true
         }
         this.handleChange = this.handleChange.bind(this);
-        this.submitForm = this.submitForm.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(e){
         this.setState({ [e.target.name] : e.target.value });
     }
 
-    submitForm(){
+    handleSubmit(e){
+        e.preventDefault();
 
+        var mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+        if(this.state.age < 18){
+            if(this.state.number < 0 || this.state.number.toString().length !== 9){
+                this.setState({isValidNumber: false});
+                console.log("Invalid number");
+                return;
+            }
+            else{
+                this.setState({isValidNumber: true});
+                console.log("Valid number, submitting...")
+                return;
+            }
+        }
+        else{
+            if(!this.state.email.match(mailFormat)){
+                this.setState({isValidEmail: false});
+                console.log("Invalid email");
+                return;
+            }
+            else{
+                this.setState({isValidEmail: true});
+                console.log("Valid email, submitting...");
+                return;
+            }
+        }
     }
 
     render(){
         return(
             <div>
                 <br/>
-                <div style={{paddingLeft: '25%'}}>
+                <form style={{paddingLeft: '25%'}} onSubmit={this.handleSubmit}>
                     <label>Age: </label>
                     <input name="age" type="number" value={this.state.age} onChange={this.handleChange}/>
                     <br/>
@@ -38,6 +67,8 @@ class Form extends React.Component{
                         <br/>
                         <label>Parent Phone No: </label>
                         <input name="number" type="number" value={this.state.number} onChange={this.handleChange}/>
+                        <br/>
+                        {this.state.isValidNumber ? "" : <label style={{color: 'red'}}>Wrong number...</label>}
                     </div> :
                     <div>
                         <label>Name: </label>
@@ -45,10 +76,11 @@ class Form extends React.Component{
                         <br/>
                         <label>Email: </label>
                         <input name="email" type="email" value={this.state.email} onChange={this.handleChange}/>
+                        {this.state.isValidEmail ? "" : <label style={{color: 'red'}}>Wrong Email...</label>}
                     </div>
                     }
-                    <button type="button" onClick={this.submitForm}>Submit</button>
-                </div>
+                    <button type="submit">Submit</button>
+                </form>
             </div>
         )
     }
