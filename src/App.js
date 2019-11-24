@@ -1,5 +1,6 @@
 import React from 'react';
 import EmployeesList from './EmployeesList';
+import Form from './Form';
 
 class App extends React.Component {
 
@@ -28,11 +29,17 @@ class App extends React.Component {
   render(){
     return (
       <div>
-        <h1 style={{paddingLeft: "10%"}}>Employees:</h1>
-        {this.state.isLoading ? <label>Loading...</label> : 
-          <EmployeesList
-            employees = {this.state.employees}
-          />}
+        <div>
+          <h1 style={{paddingLeft: "10%"}}>Employees:</h1>
+          {this.state.isLoading ? <label>Loading...</label> : 
+            <EmployeesList
+              employees = {this.state.employees}
+            />}
+            <br/>
+        </div>
+        <div style={{padding: "10%"}}>
+          <Form/>
+        </div>
       </div>
     )
   }

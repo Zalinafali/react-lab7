@@ -1,5 +1,5 @@
-import React from 'react'
-import './App.css'
+import React from 'react';
+import './App.css';
 
 function Employee(props){
     const activeStyle = {
@@ -11,8 +11,8 @@ function Employee(props){
 
     return(
         <div style={props.data.isActive ? activeStyle : inactiveStyle}>
-            <div class="column left">{props.data.name}</div>
-            <div class="column right">{props.data.age}</div>
+            <div className="column left">{props.data.name}</div>
+            <div className="column right">{props.data.age}</div>
         </div>
     )
 }

@@ -1,5 +1,5 @@
-import React from 'react'
-import Employee from './Employee'
+import React from 'react';
+import Employee from './Employee';
 
 function EmployeesList(props){
     const employeesList = props.employees.map(employeeData =>
