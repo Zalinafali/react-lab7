@@ -6,50 +6,67 @@ class Form extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            age: 0,
+            age: '',
             name: '',
-            number: 0,
+            number: '',
             email: '',
             isValidNumber: true,
-            isValidEmail: true
+            isValidEmail: true,
+            canSubmit: false
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(e){
-        this.setState({ [e.target.name] : e.target.value });
+        this.setState({ [e.target.name] : e.target.value }, this.validate);
     }
 
     handleSubmit(e){
         e.preventDefault();
 
-        var mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
         if(this.state.age < 18){
-            if(this.state.number < 0 || this.state.number.toString().length !== 9){
-                this.setState({isValidNumber: false});
-                console.log("Invalid number");
-                return;
-            }
-            else{
-                this.setState({isValidNumber: true});
-                console.log("Valid number, submitting...")
-                return;
-            }
+            console.log("Valid number, submitting...")
         }
         else{
-            if(!this.state.email.match(mailFormat)){
-                this.setState({isValidEmail: false});
-                console.log("Invalid email");
-                return;
+            console.log("Valid email, submitting...");
+        }
+        
+    }
+
+    validate(){
+        var mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+            if(this.state.age < 18){
+                if(this.state.number < 0 || this.state.number.toString().length !== 9){
+                    this.setState({
+                        isValidNumber: false,
+                        canSubmit: false
+                    });
+                    console.log("invalid number");
+                    return;
+                }
+                else{
+                    this.setState({canSubmit: true, isValidNumber: true});
+                    console.log("valid number");
+                    return;
+                }
             }
             else{
-                this.setState({isValidEmail: true});
-                console.log("Valid email, submitting...");
-                return;
+                if(!this.state.email.match(mailFormat)){
+                    this.setState({
+                        isValidEmail: false,
+                        canSubmit: false
+                    });
+                    console.log("invalid email");
+                    return;
+                }
+                else{
+                    this.setState({canSubmit: true, isValidEmail: true});
+                    console.log("valid email");
+                    return;
+                }
             }
-        }
     }
 
     render(){
@@ -79,7 +96,7 @@ class Form extends React.Component{
                         {this.state.isValidEmail ? "" : <label style={{color: 'red'}}>Wrong Email...</label>}
                     </div>
                     }
-                    <button type="submit">Submit</button>
+                    <button type="submit" disabled={!this.state.canSubmit}>Submit</button>
                 </form>
             </div>
         )
